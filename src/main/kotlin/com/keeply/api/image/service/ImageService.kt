@@ -13,6 +13,9 @@ import com.keeply.domain.user.repository.UserRepository
 import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.dto.ApiResponse
 import com.keeply.global.dto.Message
+import com.keeply.global.exception.folder.FolderNotFoundException
+import com.keeply.global.exception.image.ImageNotFoundException
+import com.keeply.global.exception.user.UserNotFoundException
 import com.keeply.global.redis.RedisService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -170,14 +173,14 @@ class ImageService (
         )
     }
 
-    private fun getUser(userId: Long): User = (userRepository.findUserById(userId)
-        ?: throw Exception("존재하지 않는 유저입니다."))
+    private fun getUser(userId: Long): User = userRepository.findUserById(userId)
+        ?: throw UserNotFoundException()
 
 
     private fun getImage(imageId: Long, userId: Long): Image = imageRepository.findImageByIdAndUserId(imageId,userId)
-        ?: throw Exception("imageId에 해당하는 이미지가 없습니다.")
+        ?: throw ImageNotFoundException()
 
 
-    private fun getFolder(userId: Long, folderId: Long): Folder = (folderRepository.findByUserIdAndId(userId, folderId)
-        ?: throw Exception("폴더를 찾을 수 없습니다."))
+    private fun getFolder(userId: Long, folderId: Long): Folder = folderRepository.findByUserIdAndId(userId, folderId)
+        ?: throw FolderNotFoundException()
 }

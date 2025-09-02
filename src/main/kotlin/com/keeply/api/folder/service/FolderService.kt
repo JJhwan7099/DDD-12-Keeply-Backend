@@ -14,6 +14,8 @@ import com.keeply.domain.user.repository.UserRepository
 import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.dto.ApiResponse
 import com.keeply.global.dto.Message
+import com.keeply.global.exception.folder.FolderNotFoundException
+import com.keeply.global.exception.user.UserNotFoundException
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -36,7 +38,6 @@ class FolderService (
         val folderColor = requestDTO.folderColor
 
         val user = getUser(userId)
-            ?: throw Exception("존재하지 않는 유저입니다.")
 
         var folder = getFolderByUserIdAndFolderName(userId, folderName)
 
@@ -182,7 +183,7 @@ class FolderService (
 
     private fun getFolderByUserIdAndFolderId(userId: Long, folderId: Long): Folder =
         folderRepository.findByUserIdAndId(userId, folderId)
-            ?: throw Exception("존재하지 않는 폴더입니다.")
+            ?: throw FolderNotFoundException()
 
     private fun getFolderListByUserId(userId: Long, sortBy: String, orderBy: String): List<Folder> {
         val folderList = folderRepository.findAllByUserId(userId)
@@ -200,7 +201,7 @@ class FolderService (
 
     private fun getUser(userId: Long): User =
         userRepository.findById(userId).orElse(
-            throw NoSuchElementException("존재하지 않는 유저의 Id입니다.")
+            throw UserNotFoundException()
         )
 
     private fun setFolderName(folderName: String, userId: Long): String {

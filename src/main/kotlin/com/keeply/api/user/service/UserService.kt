@@ -7,6 +7,7 @@ import com.keeply.domain.user.repository.UserRepository
 import com.keeply.global.aws.lambda.LambdaService
 import com.keeply.global.dto.ApiResponse
 import com.keeply.global.dto.Message
+import com.keeply.global.exception.user.UserNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
@@ -65,6 +66,6 @@ class UserService(
         user.scheduledDeleteAt = LocalDateTime.now() + Duration.ofDays(30)
     }
 
-    private fun getUser(userId: Long): User = (userRepository.findUserById(userId)
-        ?: throw Exception("유저가 존재하지 않습니다."))
+    private fun getUser(userId: Long): User = userRepository.findUserById(userId)
+        ?: throw UserNotFoundException()
 }

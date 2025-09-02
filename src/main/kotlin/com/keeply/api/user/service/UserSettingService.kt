@@ -7,6 +7,8 @@ import com.keeply.domain.user.entity.UserSetting
 import com.keeply.domain.user.repository.UserRepository
 import com.keeply.domain.user.repository.UserSettingRepository
 import com.keeply.global.dto.ApiResponse
+import com.keeply.global.exception.user.UserNotFoundException
+import com.keeply.global.exception.user.UserSettingNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -46,10 +48,10 @@ class UserSettingService(
         )
     }
 
-    private fun getUserSetting(user: User): UserSetting = (userSettingRepository.findByUser(user)
-        ?: throw Exception("유저의 설정 정보가 존재하지 않습니다."))
+    private fun getUserSetting(user: User): UserSetting = userSettingRepository.findByUser(user)
+        ?: throw UserSettingNotFoundException()
 
-    private fun getUser(userId: Long): User = (userRepository.findUserById(userId)
-        ?: throw Exception("존재하지 않는 유저입니다."))
+    private fun getUser(userId: Long): User = userRepository.findUserById(userId)
+        ?: throw UserNotFoundException()
 
 }
