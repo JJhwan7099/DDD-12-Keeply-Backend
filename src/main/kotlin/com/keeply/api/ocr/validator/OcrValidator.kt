@@ -1,25 +1,28 @@
 package com.keeply.api.ocr.validator
 
 import com.keeply.api.ocr.dto.OcrRequestDTO
+import com.keeply.global.exception.image.ImageNotFoundException
+import com.keeply.global.exception.image.ImageSizeTooLargeException
+import com.keeply.global.exception.ocr.OcrIllegalArgumentException
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 
 @Component
 class OcrValidator {
     fun validateImageFile(file: MultipartFile?) {
-        file ?: throw Exception("Image 파일을 찾을 수 없습니다.")
+        file ?: throw ImageNotFoundException()
         if(file.size > 1_048_576) {
-            throw Exception("이미지 파일의 크기는 최대 1MB로 제한됩니다.")
+            throw ImageSizeTooLargeException()
         }
     }
     fun validateAnalyzeRequest(request: OcrRequestDTO) {
         if (request.isNew) {
             if (request.imageId != null) {
-                throw IllegalArgumentException("isNew가 true인 경우 imageId는 null이어야 합니다.")
+                throw OcrIllegalArgumentException()
             }
         } else {
             if (request.imageId == null) {
-                throw IllegalArgumentException("isNew가 false인 경우 imageId는 필수입니다.")
+                throw OcrIllegalArgumentException()
             }
         }
     }

@@ -5,6 +5,7 @@ import com.keeply.api.folder.dto.FolderResponseDTO
 import com.keeply.api.folder.service.FolderService
 import com.keeply.global.dto.ApiResponse
 import com.keeply.global.dto.Message
+import com.keeply.global.exception.folder.InvalidFolderIdException
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
@@ -55,7 +56,7 @@ class FolderController (
             folderService.getUncategorizedImages(userDetails.userId)
         } else {
             val parsedFolderId = folderId.toLongOrNull()
-                ?: throw Exception("유효하지 않은 folderId입니다.")
+                ?: throw InvalidFolderIdException()
             folderService.getFolderImages(userDetails.userId, parsedFolderId)
         }
         return ResponseEntity.ok(apiResponse)

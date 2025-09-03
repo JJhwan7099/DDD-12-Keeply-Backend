@@ -3,6 +3,7 @@ package com.keeply.api.image.validator
 import com.keeply.api.image.dto.ImageRequestDTO.MoveImageRequestDTO
 import com.keeply.api.image.dto.ImageRequestDTO.SaveRequestDTO
 import com.keeply.global.exception.folder.InvalidFolderIdException
+import com.keeply.global.exception.image.ImageIllegalArgumentException
 import com.keeply.global.exception.image.ImageSizeTooLargeException
 import com.keeply.global.exception.image.InvalidImageIdException
 import com.keeply.global.exception.user.InvalidUserIdException
@@ -24,11 +25,11 @@ class ImageValidator {
 
         if (request.isCached) {
             if (request.cachedImageId.isNullOrBlank()) {
-                throw IllegalArgumentException("isCached가 true일 경우 cachedImageId는 필수입니다.")
+                throw ImageIllegalArgumentException()
             }
         } else {
             if (request.imageId == null) {
-                throw IllegalArgumentException("isCached가 false일 경우 imageId는 필수입니다.")
+                throw ImageIllegalArgumentException()
             }
         }
     }
