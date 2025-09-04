@@ -10,9 +10,9 @@ import com.keeply.domain.image.repository.ImageRepository
 import com.keeply.domain.image.service.ImageDomainService
 import com.keeply.domain.user.entity.User
 import com.keeply.domain.user.repository.UserRepository
-import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.api.dto.Message
+import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.exception.folder.FolderNotFoundException
 import com.keeply.global.exception.image.ImageNotFoundException
 import com.keeply.global.exception.user.UserNotFoundException

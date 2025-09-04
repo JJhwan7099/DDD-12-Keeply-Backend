@@ -2,7 +2,6 @@ package com.keeply.global.api.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.keeply.global.exception.code.ErrorResultCode
-import com.keeply.global.exception.code.SuccessResultCode
 import org.springframework.http.HttpStatus
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

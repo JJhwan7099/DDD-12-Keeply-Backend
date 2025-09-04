@@ -5,10 +5,12 @@ import com.keeply.global.exception.image.ImageIllegalArgumentException
 import com.keeply.global.exception.image.ImageNotFoundException
 import com.keeply.global.exception.image.ImageSizeTooLargeException
 import com.keeply.global.exception.image.InvalidImageIdException
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
+@Hidden
 @RestControllerAdvice(basePackages = ["com.keeply.api.image"])
 class ImageExceptionHandler: BaseExceptionHandler() {
     @ExceptionHandler(ImageNotFoundException::class)

@@ -1,6 +1,7 @@
 package com.keeply.global.api
 
 import com.keeply.global.api.dto.ApiResponse
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -10,7 +11,8 @@ import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
-@RestControllerAdvice
+@Hidden
+@RestControllerAdvice(basePackages = ["com.keeply.api"])
 class ApiResponseAdvice: ResponseBodyAdvice<Any>{
     override fun supports(
         returnType: MethodParameter,

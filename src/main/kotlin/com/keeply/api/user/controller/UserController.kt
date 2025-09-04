@@ -5,7 +5,6 @@ import com.keeply.api.user.service.UserService
 import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.api.dto.Message
 import com.keeply.global.security.CustomUserDetails
-import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 

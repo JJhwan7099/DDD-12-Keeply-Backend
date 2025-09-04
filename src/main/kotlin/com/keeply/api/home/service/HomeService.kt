@@ -5,8 +5,8 @@ import com.keeply.api.home.dto.HomeResponseDTO
 import com.keeply.api.home.dto.ImageInfo
 import com.keeply.domain.folder.repository.FolderRepository
 import com.keeply.domain.image.repository.ImageRepository
-import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.aws.s3.S3Service
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDate
