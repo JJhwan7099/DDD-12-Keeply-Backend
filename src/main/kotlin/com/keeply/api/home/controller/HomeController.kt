@@ -2,7 +2,7 @@ package com.keeply.api.home.controller
 
 import com.keeply.api.home.dto.HomeResponseDTO
 import com.keeply.api.home.service.HomeService
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.security.core.annotation.AuthenticationPrincipal

@@ -2,7 +2,7 @@ package com.keeply.api.user.controller
 
 import com.keeply.api.user.dto.UserInfoDTO
 import com.keeply.api.user.service.UserService
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import com.keeply.global.api.dto.Message
 import com.keeply.global.security.CustomUserDetails
 import org.springframework.security.core.annotation.AuthenticationPrincipal

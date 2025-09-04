@@ -3,7 +3,7 @@ package com.keeply.api.image.controller
 import com.keeply.api.image.dto.ImageRequestDTO
 import com.keeply.api.image.dto.ImageResponseDTO
 import com.keeply.api.image.service.ImageService
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import com.keeply.global.api.dto.Message
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation

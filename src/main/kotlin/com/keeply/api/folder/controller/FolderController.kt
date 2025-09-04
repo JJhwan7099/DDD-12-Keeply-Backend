@@ -3,9 +3,9 @@ package com.keeply.api.folder.controller
 import com.keeply.api.folder.dto.FolderRequestDTO
 import com.keeply.api.folder.dto.FolderResponseDTO
 import com.keeply.api.folder.service.FolderService
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import com.keeply.global.api.dto.Message
-import com.keeply.global.exception.folder.InvalidFolderIdException
+import com.keeply.global.api.exception.folder.InvalidFolderIdException
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.security.core.annotation.AuthenticationPrincipal

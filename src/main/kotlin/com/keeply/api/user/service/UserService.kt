@@ -4,10 +4,10 @@ import com.keeply.api.user.dto.UserInfoDTO
 import com.keeply.domain.image.service.ImageDomainService
 import com.keeply.domain.user.entity.User
 import com.keeply.domain.user.repository.UserRepository
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import com.keeply.global.api.dto.Message
 import com.keeply.global.aws.lambda.LambdaService
-import com.keeply.global.exception.user.UserNotFoundException
+import com.keeply.global.api.exception.user.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

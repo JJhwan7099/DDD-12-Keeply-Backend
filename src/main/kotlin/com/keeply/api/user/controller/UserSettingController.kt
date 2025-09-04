@@ -3,7 +3,7 @@ package com.keeply.api.user.controller
 import com.keeply.api.user.dto.UserSettingRequestDTO
 import com.keeply.api.user.dto.UserSettingResponseDTO
 import com.keeply.api.user.service.UserSettingService
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.security.core.annotation.AuthenticationPrincipal

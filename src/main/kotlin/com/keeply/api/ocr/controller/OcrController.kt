@@ -3,7 +3,7 @@ package com.keeply.api.ocr.controller
 import com.keeply.api.ocr.dto.OcrRequestDTO
 import com.keeply.api.ocr.dto.OcrResponseDTO
 import com.keeply.api.ocr.service.OcrService
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.MediaType

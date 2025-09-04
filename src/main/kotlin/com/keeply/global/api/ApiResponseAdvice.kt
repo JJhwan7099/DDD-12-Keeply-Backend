@@ -1,7 +1,7 @@
 package com.keeply.global.api
 
 import com.keeply.api.login.dto.LoginResponseDTO
-import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.ApiResponse
 import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpStatus

@@ -1,9 +1,9 @@
 package com.keeply.api.ocr.validator
 
 import com.keeply.api.ocr.dto.OcrRequestDTO
-import com.keeply.global.exception.image.ImageNotFoundException
-import com.keeply.global.exception.image.ImageSizeTooLargeException
-import com.keeply.global.exception.ocr.OcrIllegalArgumentException
+import com.keeply.global.api.exception.image.ImageNotFoundException
+import com.keeply.global.api.exception.image.ImageSizeTooLargeException
+import com.keeply.global.api.exception.ocr.OcrIllegalArgumentException
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 

@@ -6,9 +6,9 @@ import com.keeply.domain.user.entity.User
 import com.keeply.domain.user.entity.UserSetting
 import com.keeply.domain.user.repository.UserRepository
 import com.keeply.domain.user.repository.UserSettingRepository
-import com.keeply.global.api.dto.ApiResponse
-import com.keeply.global.exception.user.UserNotFoundException
-import com.keeply.global.exception.user.UserSettingNotFoundException
+import com.keeply.global.api.ApiResponse
+import com.keeply.global.api.exception.user.UserNotFoundException
+import com.keeply.global.api.exception.user.UserSettingNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

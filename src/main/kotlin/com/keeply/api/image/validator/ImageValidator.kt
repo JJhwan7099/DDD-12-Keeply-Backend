@@ -2,11 +2,11 @@ package com.keeply.api.image.validator
 
 import com.keeply.api.image.dto.ImageRequestDTO.MoveImageRequestDTO
 import com.keeply.api.image.dto.ImageRequestDTO.SaveRequestDTO
-import com.keeply.global.exception.folder.InvalidFolderIdException
-import com.keeply.global.exception.image.ImageIllegalArgumentException
-import com.keeply.global.exception.image.ImageSizeTooLargeException
-import com.keeply.global.exception.image.InvalidImageIdException
-import com.keeply.global.exception.user.InvalidUserIdException
+import com.keeply.global.api.exception.folder.InvalidFolderIdException
+import com.keeply.global.api.exception.image.ImageIllegalArgumentException
+import com.keeply.global.api.exception.image.ImageSizeTooLargeException
+import com.keeply.global.api.exception.image.InvalidImageIdException
+import com.keeply.global.api.exception.user.InvalidUserIdException
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 
