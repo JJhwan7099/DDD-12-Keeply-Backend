@@ -3,8 +3,8 @@ package com.keeply.api.folder.controller
 import com.keeply.api.folder.dto.FolderRequestDTO
 import com.keeply.api.folder.dto.FolderResponseDTO
 import com.keeply.api.folder.service.FolderService
-import com.keeply.global.dto.ApiResponse
-import com.keeply.global.dto.Message
+import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.dto.Message
 import com.keeply.global.exception.folder.InvalidFolderIdException
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
@@ -35,14 +35,14 @@ class FolderController (
         @RequestParam(required = false) keyword: String?,
         @RequestParam(required = false, defaultValue = "updatedAt") sortBy: String,
         @RequestParam(required = false, defaultValue = "desc") orderBy: String,
-    ): ResponseEntity<ApiResponse<FolderResponseDTO.FolderList>> {
+    ): ApiResponse<FolderResponseDTO.FolderList> {
         val requestDTO = FolderRequestDTO.GetFoldersRequestDTO(
             keyword = keyword,
             sortBy = sortBy,
             orderBy = orderBy
         )
         val apiResponse = folderService.getFolders(userDetails.userId, requestDTO)
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
 
     @GetMapping("/{folderId}")
@@ -51,7 +51,7 @@ class FolderController (
     fun getFolderImages(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @PathVariable folderId: String
-    ): ResponseEntity<ApiResponse<FolderResponseDTO.FolderImages>> {
+    ): ApiResponse<FolderResponseDTO.FolderImages> {
         val apiResponse = if (folderId == "uncategorized") {
             folderService.getUncategorizedImages(userDetails.userId)
         } else {
@@ -59,7 +59,7 @@ class FolderController (
                 ?: throw InvalidFolderIdException()
             folderService.getFolderImages(userDetails.userId, parsedFolderId)
         }
-        return ResponseEntity.ok(apiResponse)
+        return apiResponse
     }
 
 
@@ -69,9 +69,9 @@ class FolderController (
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @PathVariable folderId: Long,
         @RequestBody requestDTO : FolderRequestDTO.UpdateRequestDTO
-    ): ResponseEntity<ApiResponse<FolderResponseDTO.Folder>> {
+    ): ApiResponse<FolderResponseDTO.Folder> {
         val apiResponse = folderService.updateFolder(userDetails.userId, folderId, requestDTO)
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
 
     @DeleteMapping("/{folderId}")
@@ -79,8 +79,8 @@ class FolderController (
     fun deleteFolder(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @PathVariable folderId: Long
-    ): ResponseEntity<ApiResponse<Message>> {
+    ): ApiResponse<Message> {
         val apiResponse = folderService.deleteFolder(userDetails.userId, folderId)
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
 }

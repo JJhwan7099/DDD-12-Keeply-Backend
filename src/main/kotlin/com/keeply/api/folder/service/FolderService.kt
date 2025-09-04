@@ -12,11 +12,12 @@ import com.keeply.domain.image.service.ImageDomainService
 import com.keeply.domain.user.entity.User
 import com.keeply.domain.user.repository.UserRepository
 import com.keeply.global.aws.s3.S3Service
-import com.keeply.global.dto.ApiResponse
-import com.keeply.global.dto.Message
+import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.dto.Message
 import com.keeply.global.exception.folder.FolderNotFoundException
 import com.keeply.global.exception.user.UserNotFoundException
 import jakarta.transaction.Transactional
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.LocalDateTime
@@ -49,18 +50,20 @@ class FolderService (
 
         folder = folderRepository.save(folder)
 
-        return ApiResponse(
-            success = true,
-            response = FolderResponseDTO.Folder(
-                folderId = folder.id!!,
-                folderName = folder.name,
-                folderColor = folder.color,
-                imageCount = folder.images.size,
-                updatedAt = folder.updatedAt,
-                isDuplicate = folder.name != folderName,
-                duplicatedMessage = if(folder.name != folderName) "이미 존재하는 폴더명 입니다. \'${folder.name}\'로 추가되었습니다."
-                else "",
-            )
+        val response = FolderResponseDTO.Folder(
+            folderId = folder.id!!,
+            folderName = folder.name,
+            folderColor = folder.color,
+            imageCount = folder.images.size,
+            updatedAt = folder.updatedAt,
+            isDuplicate = folder.name != folderName,
+            duplicatedMessage = if(folder.name != folderName) "이미 존재하는 폴더명 입니다. \'${folder.name}\'로 추가되었습니다."
+            else "",
+        )
+
+        return ApiResponse.success(
+            HttpStatus.CREATED,
+            response
         )
     }
 
@@ -87,9 +90,10 @@ class FolderService (
                     folder.updatedAt
                 )
             }
-        return ApiResponse(
-            success = true,
-            response = FolderResponseDTO.FolderList(result)
+
+        return ApiResponse.success(
+            HttpStatus.OK,
+            FolderResponseDTO.FolderList(result)
         )
     }
 
@@ -109,11 +113,9 @@ class FolderService (
             )
         }
 
-        return ApiResponse<FolderResponseDTO.FolderImages>(
-            success = true,
-            response = FolderResponseDTO.FolderImages(
-                result
-            )
+        return ApiResponse.success(
+            HttpStatus.OK,
+            FolderResponseDTO.FolderImages(result)
         )
     }
 
@@ -139,11 +141,9 @@ class FolderService (
             )
         }
 
-        return ApiResponse<FolderResponseDTO.FolderImages>(
-            success = true,
-            response = FolderResponseDTO.FolderImages(
-                result
-            )
+        return ApiResponse.success(
+            HttpStatus.OK,
+            FolderResponseDTO.FolderImages(result)
         )
     }
 
@@ -154,14 +154,15 @@ class FolderService (
         val folder = getFolderByUserIdAndFolderId(userId, folderId)
         folder.name = setFolderName(requestDTO.folderName, userId)
         folder.color = requestDTO.folderColor
-        return ApiResponse<FolderResponseDTO.Folder>(
-            success = true,
-            response = FolderResponseDTO.Folder(
-                folder.id!!,
-                folder.name,
-                folder.color,
-                folder.images.size,
-                folder.updatedAt,
+
+        return ApiResponse.success(
+            HttpStatus.OK,
+            FolderResponseDTO.Folder(
+                folderId = folder.id!!,
+                folderName = folder.name,
+                folderColor = folder.color,
+                imageCount = folder.images.size,
+                updatedAt = folder.updatedAt,
                 isDuplicate = folder.name != requestDTO.folderName,
                 duplicatedMessage = if(folder.name != requestDTO.folderName) "이미 존재하는 폴더명 입니다. \'${folder.name}\'로 추가되었습니다."
                 else "",
@@ -173,9 +174,10 @@ class FolderService (
         val folder = getFolderByUserIdAndFolderId(userId, folderId)
         imageDomainService.deleteAllImagesInFolder(folder)
         folderRepository.delete(folder)
-        return ApiResponse<Message>(
-            success = true,
-            response = Message(
+
+        return ApiResponse.success(
+            HttpStatus.OK,
+            Message(
                 "${folder.name} 가 삭제되었습니다."
             )
         )

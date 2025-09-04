@@ -6,9 +6,10 @@ import com.keeply.api.ocr.validator.OcrValidator
 import com.keeply.domain.image.repository.ImageRepository
 import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.common.googlevision.GoogleVisionAPI
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.exception.image.ImageNotFoundException
 import com.keeply.global.redis.RedisService
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
@@ -37,9 +38,9 @@ class OcrService(
 
         redisService.cacheImage(cachedImageId, imageBytes, detectedText)
 
-        return ApiResponse(
-            success = true,
-            response = OcrResponseDTO(cachedImageId, detectedText)
+        return ApiResponse.success(
+            HttpStatus.OK,
+            OcrResponseDTO(cachedImageId, detectedText)
         )
     }
 
@@ -53,9 +54,9 @@ class OcrService(
 
         val detectedText = googleVisionAPI.extractTextFromImage(file)
 
-        return ApiResponse<OcrResponseDTO>(
-            success = true,
-            response = OcrResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            OcrResponseDTO(
                 detectedText = detectedText
             )
         )

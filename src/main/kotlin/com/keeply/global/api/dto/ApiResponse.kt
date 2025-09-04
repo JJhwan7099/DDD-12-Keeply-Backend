@@ -1,4 +1,4 @@
-package com.keeply.global.dto
+package com.keeply.global.api.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.keeply.global.exception.code.ErrorResultCode
@@ -13,17 +13,17 @@ data class ApiResponse<T>(
     val response: T? = null
 ) {
     companion object {
-        fun <T> success(successResultCode: SuccessResultCode, response: T?): ApiResponse<T> {
+        fun <T> success(httpStatus: HttpStatus, response: T?): ApiResponse<T> {
             return ApiResponse(
-                success = successResultCode.isSuccess(),
-                status = HttpStatus.OK,
+                success = true,
+                status = httpStatus,
                 reason = null,
                 response = response
             )
         }
 
-        fun <T> success(successResultCode: SuccessResultCode): ApiResponse<T> {
-            return success(successResultCode, null)
+        fun <T> success(httpStatus: HttpStatus): ApiResponse<T> {
+            return success(httpStatus, null)
         }
 
         fun failure(errorResultCode: ErrorResultCode): ApiResponse<Nothing> {

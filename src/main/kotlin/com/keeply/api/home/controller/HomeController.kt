@@ -2,7 +2,7 @@ package com.keeply.api.home.controller
 
 import com.keeply.api.home.dto.HomeResponseDTO
 import com.keeply.api.home.service.HomeService
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
@@ -20,8 +20,8 @@ class HomeController(
     @Operation(summary = "홈화면 요청 API")
     fun getHome(
         @AuthenticationPrincipal userDetails: CustomUserDetails
-    ): ResponseEntity<ApiResponse<HomeResponseDTO>>{
+    ): ApiResponse<HomeResponseDTO>{
         val apiResponse = homeService.getHome(userDetails.userId)
-        return ResponseEntity.ok(apiResponse)
+        return apiResponse
     }
 }

@@ -3,8 +3,8 @@ package com.keeply.api.image.controller
 import com.keeply.api.image.dto.ImageRequestDTO
 import com.keeply.api.image.dto.ImageResponseDTO
 import com.keeply.api.image.service.ImageService
-import com.keeply.global.dto.ApiResponse
-import com.keeply.global.dto.Message
+import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.dto.Message
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
@@ -27,13 +27,13 @@ class ImageController (
     fun saveImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @RequestBody requestDTO: ImageRequestDTO.SaveRequestDTO
-    ): ResponseEntity<ApiResponse<ImageResponseDTO.SaveResponseDTO>> {
+    ): ApiResponse<ImageResponseDTO.SaveResponseDTO> {
         val apiResponse = if (requestDTO.isCached) {
             imageService.saveCachedImage(userDetails.userId, requestDTO)
         } else {
             imageService.setFolderOfImage(userDetails.userId, requestDTO)
         }
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
     @PostMapping("/save")
     @Operation(summary = "ocr을 거치지 않은 이미지 저장",
@@ -45,10 +45,10 @@ class ImageController (
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @RequestPart("file") file: MultipartFile,
         @RequestParam("folderId", required = false) folderId: Long?,
-    ): ResponseEntity<ApiResponse<ImageResponseDTO.SaveResponseDTO>> {
+    ): ApiResponse<ImageResponseDTO.SaveResponseDTO> {
         val apiResponse = if(folderId==null) imageService.saveUncategorizedImage(userDetails.userId, file)
         else imageService.saveImage(userDetails.userId, file, folderId)
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
 
     @PatchMapping("/{imageId}")
@@ -57,9 +57,9 @@ class ImageController (
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @PathVariable imageId: Long,
         @RequestBody requestDTO: ImageRequestDTO.MoveImageRequestDTO
-    ): ResponseEntity<ApiResponse<ImageResponseDTO.MoveImageResponseDTO>> {
+    ): ApiResponse<ImageResponseDTO.MoveImageResponseDTO> {
         val apiResponse = imageService.moveImage(userDetails.userId, imageId, requestDTO)
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
 
     @GetMapping("/{imageId}")
@@ -67,9 +67,9 @@ class ImageController (
     fun getImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @PathVariable imageId: Long,
-    ): ResponseEntity<ApiResponse<ImageResponseDTO.ImageInfoDTO>> {
+    ): ApiResponse<ImageResponseDTO.ImageInfoDTO> {
         val apiResponse = imageService.getImageInfo(userDetails.userId, imageId)
-        return ResponseEntity.ok(apiResponse)
+        return apiResponse
     }
 
     @DeleteMapping("/{imageId}")
@@ -77,8 +77,8 @@ class ImageController (
     fun deleteImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @PathVariable imageId: Long
-    ): ResponseEntity<ApiResponse<Message>> {
+    ): ApiResponse<Message> {
         val apiResponse = imageService.deleteImage(userDetails.userId, imageId)
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
 }

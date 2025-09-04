@@ -6,9 +6,10 @@ import com.keeply.domain.user.entity.User
 import com.keeply.domain.user.entity.UserSetting
 import com.keeply.domain.user.repository.UserRepository
 import com.keeply.domain.user.repository.UserSettingRepository
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.exception.user.UserNotFoundException
 import com.keeply.global.exception.user.UserSettingNotFoundException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -21,9 +22,9 @@ class UserSettingService(
     fun getUserSetting(userId: Long) : ApiResponse<UserSettingResponseDTO> {
         val user = getUser(userId)
         val userSetting = getUserSetting(user)
-        return ApiResponse<UserSettingResponseDTO>(
-            success = true,
-            response = UserSettingResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            UserSettingResponseDTO(
                 allowStorageNotification = userSetting.storageNotificationEnabled,
                 allowMarketingNotification = userSetting.marketingNotificationEnabled
             )
@@ -39,9 +40,9 @@ class UserSettingService(
         if (requestDTO.allowMarketingNotification != null) {
             userSetting.marketingNotificationEnabled = requestDTO.allowMarketingNotification
         }
-        return ApiResponse<UserSettingResponseDTO>(
-            success = true,
-            response = UserSettingResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            UserSettingResponseDTO(
                 allowStorageNotification = userSetting.storageNotificationEnabled,
                 allowMarketingNotification = userSetting.marketingNotificationEnabled
             )

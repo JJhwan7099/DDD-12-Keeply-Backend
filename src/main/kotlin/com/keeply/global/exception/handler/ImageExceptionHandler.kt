@@ -1,7 +1,6 @@
 package com.keeply.global.exception.handler
 
-import com.keeply.global.dto.ApiResponse
-import com.keeply.global.exception.folder.InvalidFolderIdException
+import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.exception.image.ImageIllegalArgumentException
 import com.keeply.global.exception.image.ImageNotFoundException
 import com.keeply.global.exception.image.ImageSizeTooLargeException

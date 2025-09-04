@@ -1,6 +1,6 @@
 package com.keeply.global.exception.handler
 
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.exception.folder.FolderNotFoundException
 import com.keeply.global.exception.folder.InvalidFolderIdException
 import org.springframework.http.ResponseEntity

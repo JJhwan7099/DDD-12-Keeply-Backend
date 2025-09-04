@@ -1,7 +1,7 @@
 package com.keeply.global.util
 
-import com.keeply.global.dto.ApiResponse
-import com.keeply.global.dto.Message
+import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.dto.Message
 import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler

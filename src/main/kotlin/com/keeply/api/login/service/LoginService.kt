@@ -7,8 +7,9 @@ import com.keeply.domain.user.entity.UserSetting
 import com.keeply.domain.user.repository.UserRepository
 import com.keeply.domain.user.repository.UserSettingRepository
 import com.keeply.global.aws.lambda.LambdaService
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.security.JwtProvider
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -30,9 +31,9 @@ class LoginService (
 
         val jwtAccessToken = jwtProvider.generateAccessToken(user)
         val jwtRefreshToken = jwtProvider.generateRefreshToken(user)
-        return ApiResponse<LoginResponseDTO> (
-            success = true,
-            response = LoginResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            LoginResponseDTO(
                 accessToken = jwtAccessToken,
                 refreshToken = jwtRefreshToken
             )

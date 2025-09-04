@@ -11,12 +11,13 @@ import com.keeply.domain.image.service.ImageDomainService
 import com.keeply.domain.user.entity.User
 import com.keeply.domain.user.repository.UserRepository
 import com.keeply.global.aws.s3.S3Service
-import com.keeply.global.dto.ApiResponse
-import com.keeply.global.dto.Message
+import com.keeply.global.api.dto.ApiResponse
+import com.keeply.global.api.dto.Message
 import com.keeply.global.exception.folder.FolderNotFoundException
 import com.keeply.global.exception.image.ImageNotFoundException
 import com.keeply.global.exception.user.UserNotFoundException
 import com.keeply.global.redis.RedisService
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -56,9 +57,9 @@ class ImageService (
             base64Image = base64Image,
         )
 
-        return ApiResponse<ImageResponseDTO.SaveResponseDTO> (
-            success = true,
-            response = ImageResponseDTO.SaveResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            ImageResponseDTO.SaveResponseDTO(
                 imageId = image.id!!
             )
         )
@@ -79,9 +80,9 @@ class ImageService (
         image.isCategorized = true
         image.scheduledDeleteAt = null
 
-        return ApiResponse<ImageResponseDTO.SaveResponseDTO>(
-            success = true,
-            response = ImageResponseDTO.SaveResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            ImageResponseDTO.SaveResponseDTO(
                 imageId = imageId
             )
         )
@@ -99,9 +100,9 @@ class ImageService (
         )
         image.isCategorized = false
         image.scheduledDeleteAt = image.createdAt!!.plusDays(30)
-        return ApiResponse<ImageResponseDTO.SaveResponseDTO>(
-            success = true,
-            response = ImageResponseDTO.SaveResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            ImageResponseDTO.SaveResponseDTO(
                 imageId = image.id!!,
             )
         )
@@ -118,9 +119,9 @@ class ImageService (
             folder = folder,
             base64Image = base64Image,
         )
-        return ApiResponse<ImageResponseDTO.SaveResponseDTO>(
-            success = true,
-            response = ImageResponseDTO.SaveResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            ImageResponseDTO.SaveResponseDTO(
                 imageId = image.id!!
             )
         )
@@ -131,9 +132,9 @@ class ImageService (
         val folder = getFolder(userId, requestDTO.folderId)
         val image = getImage(imageId, userId)
         image.folder = folder
-        return ApiResponse<ImageResponseDTO.MoveImageResponseDTO>(
-            success = true,
-            response = ImageResponseDTO.MoveImageResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            ImageResponseDTO.MoveImageResponseDTO(
                 imageId = image.id!!,
                 folderId = folder.id!!,
             )
@@ -144,9 +145,9 @@ class ImageService (
         val image = getImage(imageId, userId)
         val daysUntilDeletion = if(image.isCategorized) null
         else Duration.between(LocalDate.now(), image.scheduledDeleteAt).toDays()
-        return ApiResponse<ImageResponseDTO.ImageInfoDTO>(
-            success = true,
-            response = ImageResponseDTO.ImageInfoDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            ImageResponseDTO.ImageInfoDTO(
                 imageId = image.id!!,
                 presignedUrl = s3Service.generatePresignedUrl(image.s3Key),
                 insight = image.insight,
@@ -165,9 +166,9 @@ class ImageService (
         val user = getUser(userId)
         imageDomainService.deleteImage(user, image)
 
-        return ApiResponse<Message>(
-            success = true,
-            response = Message(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            Message(
                 "$userId 유저의 $imageId 가 삭제되었습니다."
             )
         )

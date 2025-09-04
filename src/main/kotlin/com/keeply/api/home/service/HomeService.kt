@@ -6,7 +6,8 @@ import com.keeply.api.home.dto.ImageInfo
 import com.keeply.domain.folder.repository.FolderRepository
 import com.keeply.domain.image.repository.ImageRepository
 import com.keeply.global.aws.s3.S3Service
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -87,9 +88,9 @@ class HomeService(
                 )
             }
 
-        return ApiResponse<HomeResponseDTO>(
-            success = true,
-            response = HomeResponseDTO(
+        return ApiResponse.success(
+            HttpStatus.OK,
+            HomeResponseDTO(
                 userId = userId,
                 imageCount = imagesOrderByUpdatedAtDesc.size,
                 uncategorizedImageCount = uncategorizedImageCount,

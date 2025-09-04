@@ -3,7 +3,7 @@ package com.keeply.api.login.controller
 import com.keeply.api.login.dto.KakaoUserInfo
 import com.keeply.api.login.dto.LoginResponseDTO
 import com.keeply.api.login.service.LoginService
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,8 +24,8 @@ class LoginController (
     )
     fun loginAndRegister(
         @RequestBody requestDTO: KakaoUserInfo
-    ) : ResponseEntity<ApiResponse<LoginResponseDTO>> {
+    ) : ApiResponse<LoginResponseDTO> {
         val apiResponse = loginService.loginAndRegister(requestDTO)
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse)
+        return apiResponse
     }
 }

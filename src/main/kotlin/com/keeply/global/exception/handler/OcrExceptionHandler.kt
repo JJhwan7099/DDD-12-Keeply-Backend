@@ -1,6 +1,6 @@
 package com.keeply.global.exception.handler
 
-import com.keeply.global.dto.ApiResponse
+import com.keeply.global.api.dto.ApiResponse
 import com.keeply.global.exception.ocr.OcrIllegalArgumentException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
