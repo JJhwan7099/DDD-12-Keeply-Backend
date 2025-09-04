@@ -23,9 +23,9 @@ class FolderController (
     fun createFolder(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @RequestBody requestDTO: FolderRequestDTO.CreateRequestDTO
-    ): ResponseEntity<ApiResponse<FolderResponseDTO.Folder>> {
+    ): ApiResponse<FolderResponseDTO.Folder> {
         val apiResponse = folderService.createFolder(userDetails.userId, requestDTO)
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse)
+        return apiResponse
     }
 
     @GetMapping
