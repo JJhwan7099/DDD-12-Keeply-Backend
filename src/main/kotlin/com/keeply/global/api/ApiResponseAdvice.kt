@@ -1,5 +1,6 @@
 package com.keeply.global.api
 
+import com.keeply.api.login.dto.LoginResponseDTO
 import com.keeply.global.api.dto.ApiResponse
 import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.core.MethodParameter
@@ -30,12 +31,23 @@ class ApiResponseAdvice: ResponseBodyAdvice<Any>{
         request: ServerHttpRequest,
         response: ServerHttpResponse
     ): Any? {
-        return when (body) {
-            is ApiResponse<*> -> {
-                    ResponseEntity
-                        .status(body.status)
-                        .body(body)
-                }
+        val path = request.uri.path
+
+        return when {
+            path == "/api/login" && body is ApiResponse<*> -> {
+
+                val data = body.response as LoginResponseDTO
+
+                ResponseEntity
+                    .status(body.statusCode)
+                    .header("Authorization", "Bearer ${data.accessToken}")
+                    .body(body)
+            }
+
+            body is ApiResponse<*> -> ResponseEntity
+                .status(body.statusCode)
+                .body(body)
+
             else -> body
         }
     }

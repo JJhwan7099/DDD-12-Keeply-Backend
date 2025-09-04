@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ApiResponse<T>(
     val success: Boolean,
-    val status: HttpStatus,
+    val statusCode: Int,
     val reason: String? = null,
     val response: T? = null
 ) {
@@ -15,7 +15,7 @@ data class ApiResponse<T>(
         fun <T> success(httpStatus: HttpStatus, response: T?): ApiResponse<T> {
             return ApiResponse(
                 success = true,
-                status = httpStatus,
+                statusCode = httpStatus.value(),
                 reason = null,
                 response = response
             )
@@ -28,7 +28,7 @@ data class ApiResponse<T>(
         fun failure(errorResultCode: ErrorResultCode): ApiResponse<Nothing> {
             return ApiResponse(
                 success = errorResultCode.isSuccess(),
-                status = errorResultCode.status,
+                statusCode = errorResultCode.status.value(),
                 reason = errorResultCode.message,
                 response = null
             )
