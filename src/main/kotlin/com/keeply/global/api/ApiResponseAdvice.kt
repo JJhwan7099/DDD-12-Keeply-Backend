@@ -4,6 +4,7 @@ import com.keeply.api.login.dto.LoginResponseDTO
 import com.keeply.global.api.dto.ApiResponse
 import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.core.MethodParameter
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageConverter
@@ -31,23 +32,16 @@ class ApiResponseAdvice: ResponseBodyAdvice<Any>{
         request: ServerHttpRequest,
         response: ServerHttpResponse
     ): Any? {
-        val path = request.uri.path
-
-        return when {
-            path == "/api/login" && body is ApiResponse<*> -> {
-
-                val data = body.response as LoginResponseDTO
-
-                ResponseEntity
-                    .status(body.statusCode)
-                    .header("Authorization", "Bearer ${data.accessToken}")
-                    .body(body)
+        return when (body){
+            is ApiResponse<*> -> {
+                response.setStatusCode(HttpStatus.valueOf(body.statusCode))
+                if (request.uri.path == "/api/login" && body.success) {
+                    (body.response as? LoginResponseDTO)?.let { data ->
+                        response.headers.add("Authorization", "Bearer ${data.accessToken}")
+                    }
+                }
+                body
             }
-
-            body is ApiResponse<*> -> ResponseEntity
-                .status(body.statusCode)
-                .body(body)
-
             else -> body
         }
     }
