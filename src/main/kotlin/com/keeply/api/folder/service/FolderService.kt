@@ -211,7 +211,7 @@ class FolderService (
         if (existFolderNames.isEmpty()) return folderName
 
         val usedIndexes = existFolderNames.mapNotNull {
-            val regex = Regex("^$folderName(\\d+)$")
+            val regex = Regex("^${Regex.escape(folderName)}(\\d+)$")
             regex.find(it)?.groupValues?.get(1)?.toIntOrNull()
                 ?: if (it == folderName) 1 else null
         }.toSet()
