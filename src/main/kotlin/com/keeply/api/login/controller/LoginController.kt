@@ -16,6 +16,15 @@ import org.springframework.web.bind.annotation.RestController
 class LoginController (
     private val loginService: LoginService
 ) {
+    /**
+     * Handles login (and registration) requests submitted as a Kakao user JSON payload.
+     *
+     * Validates the incoming KakaoUserInfo request body and delegates authentication/registration to the LoginService,
+     * returning the service's ApiResponse containing a LoginResponseDTO.
+     *
+     * @param requestDTO The validated Kakao user information parsed from the request body.
+     * @return ApiResponse wrapping the LoginResponseDTO produced by the login service.
+     */
     @PostMapping
     @Operation(summary = "로그인 API",
         description =

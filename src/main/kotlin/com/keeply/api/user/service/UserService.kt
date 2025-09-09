@@ -22,6 +22,15 @@ class UserService(
     private val imageDomainService: ImageDomainService
 
 ) {
+    /**
+     * Retrieves basic public information for the specified user.
+     *
+     * Returns an ApiResponse with HTTP 200 containing a UserInfoDTO (profile image URL, nickname, and email).
+     *
+     * @param userId The ID of the user to retrieve.
+     * @return ApiResponse wrapping a UserInfoDTO on success (HttpStatus.OK).
+     * @throws com.keeply.api.user.exception.UserNotFoundException if no user exists with the given ID.
+     */
     fun getUserInfo(userId: Long): ApiResponse<UserInfoDTO> {
         val user = getUser(userId)
         return ApiResponse.success(
@@ -34,6 +43,14 @@ class UserService(
         )
     }
 
+    /**
+     * Converts the specified user account to a dormant (deleted) state.
+     *
+     * Backs up the user's images, marks the account as deleted and schedules permanent deletion.
+     *
+     * @param userId ID of the user to convert to a dormant account.
+     * @return ApiResponse containing a confirmation Message (HTTP 200) that includes the user ID.
+     */
     fun deleteUser(userId: Long): ApiResponse<Message> {
         val user = getUser(userId)
         lambdaService.backupUserImagesBeforeDeletion(user.id)
@@ -47,6 +64,14 @@ class UserService(
         )
     }
 
+    /**
+     * Logs out a user by deleting their images and removing the user record.
+     *
+     * Deletes all images in the user's folders (via ImageDomainService) and then removes the user from the repository.
+     *
+     * @param userId ID of the user to log out and remove.
+     * @return An ApiResponse containing a confirmation Message (HTTP 200) on successful logout and cleanup.
+     */
     fun logout(userId: Long): ApiResponse<Message> {
         val user = getUser(userId)
         user.folders.forEach { folder ->
@@ -61,12 +86,27 @@ class UserService(
         )
     }
 
+    /**
+     * Marks the given user as deleted and schedules permanent deletion.
+     *
+     * Sets the user's deletion flag, records the deletion timestamp as now, and sets
+     * scheduledDeleteAt to 30 days from now.
+     *
+     * @param user The user entity to update (mutated in-place).
+     */
     private fun updateUserStatusToDeleted(user: User) {
         user.isDeleted = true
         user.deletedAt = LocalDateTime.now()
         user.scheduledDeleteAt = LocalDateTime.now() + Duration.ofDays(30)
     }
 
-    private fun getUser(userId: Long): User = userRepository.findUserById(userId)
+    /**
+         * Retrieves a User by its ID.
+         *
+         * @param userId The ID of the user to fetch.
+         * @return The found User.
+         * @throws UserNotFoundException if no user exists with the given ID.
+         */
+        private fun getUser(userId: Long): User = userRepository.findUserById(userId)
         ?: throw UserNotFoundException()
 }

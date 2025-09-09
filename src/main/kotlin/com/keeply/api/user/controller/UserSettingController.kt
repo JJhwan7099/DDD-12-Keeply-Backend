@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.*
 class UserSettingController(
     private val userSettingService: UserSettingService
 ) {
+    /**
+     * Retrieve the authenticated user's notification settings.
+     *
+     * @param userDetails The authenticated user's details (provides userId used to look up settings).
+     * @return An ApiResponse containing the user's UserSettingResponseDTO with current notification settings.
+     */
     @GetMapping
     @Operation(summary = "User 알림설정 정보 조회 API")
     fun getUserSetting(
@@ -23,6 +29,16 @@ class UserSettingController(
         return apiResponse
     }
 
+    /**
+     * Create or update the authenticated user's notification settings.
+     *
+     * Applies the provided notification settings for the current user and returns the resulting
+     * settings wrapped in an ApiResponse.
+     *
+     * @param userDetails The current authenticated user (from @AuthenticationPrincipal).
+     * @param requestDTO Notification settings to create or update.
+     * @return ApiResponse containing the updated UserSettingResponseDTO.
+     */
     @PostMapping
     @Operation(summary = "User 알림설정 API")
     fun setUserSetting(

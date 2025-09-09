@@ -22,6 +22,16 @@ import org.springframework.web.multipart.MultipartFile
 class ImageController (
     private val imageService: ImageService
 ) {
+    /**
+     * Saves an image and assigns it to a folder.
+     *
+     * If requestDTO.isCached is true the request represents a newly OCR-processed cached image and requires a `cachedImageId`.
+     * If false the request represents an image OCR'd from the uncategorized set and requires an `imageId`.
+     * The authenticated user's id (from the security principal) is used as the owner for the saved image.
+     *
+     * @param requestDTO Save request data. Must be valid; when `isCached` is true include `cachedImageId`, otherwise include `imageId`.
+     * @return ApiResponse wrapping the saved image information (SaveResponseDTO).
+     */
     @PostMapping
     @Operation(summary = "이미지 저장(폴더o)",
         description =
@@ -39,6 +49,15 @@ class ImageController (
         }
         return apiResponse
     }
+    /**
+     * Saves an uploaded image that has not gone through OCR.
+     *
+     * If `folderId` is null the image is stored as uncategorized; otherwise the image is saved into the specified folder.
+     *
+     * @param file The image file to save (multipart). Must not be null.
+     * @param folderId Optional target folder ID; when present it must be positive.
+     * @return An ApiResponse wrapping the saved image information (SaveResponseDTO).
+     */
     @PostMapping("/save")
     @Operation(summary = "ocr을 거치지 않은 이미지 저장",
         description = """
@@ -55,6 +74,15 @@ class ImageController (
         return apiResponse
     }
 
+    /**
+     * Moves an image to another folder for the authenticated user.
+     *
+     * Moves the image identified by [imageId] to the destination specified in [requestDTO].
+     *
+     * @param imageId Positive id of the image to move.
+     * @param requestDTO Contains the target folder information for the move operation.
+     * @return ApiResponse wrapping ImageResponseDTO.MoveImageResponseDTO with the result of the move.
+     */
     @PatchMapping("/{imageId}")
     @Operation(summary = "이미지를 다른 폴더로 이동")
     fun moveImageToAnotherFolder(
@@ -66,6 +94,12 @@ class ImageController (
         return apiResponse
     }
 
+    /**
+     * Retrieves information for a single image.
+     *
+     * @param imageId The positive identifier of the image to fetch.
+     * @return ApiResponse wrapping ImageResponseDTO.ImageInfoDTO containing the image details.
+     */
     @GetMapping("/{imageId}")
     @Operation(summary = "단일 이미지 조회 API")
     fun getImage(
@@ -76,6 +110,15 @@ class ImageController (
         return apiResponse
     }
 
+    /**
+     * Deletes an image owned by the authenticated user.
+     *
+     * Calls the image service to remove the image identified by [imageId] and returns an ApiResponse
+     * containing a Message with the operation result.
+     *
+     * @param imageId ID of the image to delete; must be positive.
+     * @return ApiResponse<Message> containing a success or failure message for the deletion.
+     */
     @DeleteMapping("/{imageId}")
     @Operation(summary = "이미지 삭제 API")
     fun deleteImage(
