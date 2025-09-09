@@ -6,6 +6,7 @@ import com.keeply.api.ocr.service.OcrService
 import com.keeply.global.api.ApiResponse
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.constraints.Positive
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -25,7 +26,7 @@ class OcrController (
     fun analyze(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @RequestParam("isNew") isNew: Boolean,
-        @RequestParam("imageId", required = false) imageId: Long?,
+        @RequestParam("imageId", required = false) @Positive imageId: Long?,
         @RequestParam("isSkip") isSkip: Boolean,
         @RequestPart("file") file: MultipartFile?
     ): ApiResponse<OcrResponseDTO> {

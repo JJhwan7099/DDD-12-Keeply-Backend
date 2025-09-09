@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Positive
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -47,7 +48,7 @@ class ImageController (
     fun saveImageWithoutFolder(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
         @RequestPart("file") @NotNull file: MultipartFile,
-        @RequestParam("folderId", required = false) folderId: Long?,
+        @RequestParam("folderId", required = false) @Positive folderId: Long?,
     ): ApiResponse<ImageResponseDTO.SaveResponseDTO> {
         val apiResponse = if(folderId==null) imageService.saveUncategorizedImage(userDetails.userId, file)
         else imageService.saveImage(userDetails.userId, file, folderId)
@@ -58,7 +59,7 @@ class ImageController (
     @Operation(summary = "이미지를 다른 폴더로 이동")
     fun moveImageToAnotherFolder(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @PathVariable @NotNull imageId: Long,
+        @PathVariable @Positive imageId: Long,
         @RequestBody requestDTO: ImageRequestDTO.MoveImageRequestDTO
     ): ApiResponse<ImageResponseDTO.MoveImageResponseDTO> {
         val apiResponse = imageService.moveImage(userDetails.userId, imageId, requestDTO)
@@ -69,7 +70,7 @@ class ImageController (
     @Operation(summary = "단일 이미지 조회 API")
     fun getImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @PathVariable @NotBlank imageId: Long,
+        @PathVariable @Positive imageId: Long,
     ): ApiResponse<ImageResponseDTO.ImageInfoDTO> {
         val apiResponse = imageService.getImageInfo(userDetails.userId, imageId)
         return apiResponse
@@ -79,7 +80,7 @@ class ImageController (
     @Operation(summary = "이미지 삭제 API")
     fun deleteImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @PathVariable @NotBlank imageId: Long
+        @PathVariable @Positive imageId: Long
     ): ApiResponse<Message> {
         val apiResponse = imageService.deleteImage(userDetails.userId, imageId)
         return apiResponse
