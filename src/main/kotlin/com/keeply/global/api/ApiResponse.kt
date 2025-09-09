@@ -33,5 +33,14 @@ data class ApiResponse<T>(
                 response = null
             )
         }
+
+        fun failure(httpStatus: HttpStatus, message: String): ApiResponse<Nothing> {
+            return ApiResponse(
+                success = false,
+                statusCode = httpStatus.value(),
+                reason = message,
+                response = null
+            )
+        }
     }
 }

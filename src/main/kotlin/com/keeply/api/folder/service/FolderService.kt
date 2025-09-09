@@ -13,9 +13,9 @@ import com.keeply.domain.user.entity.User
 import com.keeply.domain.user.repository.UserRepository
 import com.keeply.global.api.ApiResponse
 import com.keeply.global.api.dto.Message
-import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.api.exception.folder.FolderNotFoundException
 import com.keeply.global.api.exception.user.UserNotFoundException
+import com.keeply.global.aws.s3.S3Service
 import jakarta.transaction.Transactional
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

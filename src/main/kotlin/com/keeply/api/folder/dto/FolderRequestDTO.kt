@@ -11,8 +11,7 @@ class FolderRequestDTO{
         val folderName: String,
         @Schema(description = "폴더 색상 코드")
         @Pattern(
-            regexp = "^[0-9a-fA-F]{8}$",
-            message = "색상 코드는 AARRGGBB (8자리 HEX) 형식이어야 합니다."
+            regexp = "^[0-9a-fA-F]{8}$"
         )
         val folderColor: String
     )
@@ -22,8 +21,7 @@ class FolderRequestDTO{
         val folderName: String,
         @Schema(description = "폴더 색상 코드")
         @Pattern(
-            regexp = "^[0-9a-fA-F]{8}$",
-            message = "색상 코드는 AARRGGBB (8자리 HEX) 형식이어야 합니다."
+            regexp = "^[0-9a-fA-F]{8}$"
         )
         val folderColor: String
     )

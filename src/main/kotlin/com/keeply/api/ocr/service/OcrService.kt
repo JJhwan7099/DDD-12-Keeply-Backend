@@ -5,9 +5,9 @@ import com.keeply.api.ocr.dto.OcrResponseDTO
 import com.keeply.api.ocr.validator.OcrValidator
 import com.keeply.domain.image.repository.ImageRepository
 import com.keeply.global.api.ApiResponse
+import com.keeply.global.api.exception.image.ImageNotFoundException
 import com.keeply.global.aws.s3.S3Service
 import com.keeply.global.common.googlevision.GoogleVisionAPI
-import com.keeply.global.api.exception.image.ImageNotFoundException
 import com.keeply.global.redis.RedisService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

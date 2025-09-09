@@ -7,12 +7,17 @@ import com.keeply.global.api.ApiResponse
 import com.keeply.global.api.dto.Message
 import com.keeply.global.security.CustomUserDetails
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/images")
+@Validated
 class ImageController (
     private val imageService: ImageService
 ) {
@@ -24,7 +29,7 @@ class ImageController (
     )
     fun saveImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @RequestBody requestDTO: ImageRequestDTO.SaveRequestDTO
+        @Valid @RequestBody requestDTO: ImageRequestDTO.SaveRequestDTO
     ): ApiResponse<ImageResponseDTO.SaveResponseDTO> {
         val apiResponse = if (requestDTO.isCached) {
             imageService.saveCachedImage(userDetails.userId, requestDTO)
@@ -41,7 +46,7 @@ class ImageController (
         """)
     fun saveImageWithoutFolder(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @RequestPart("file") file: MultipartFile,
+        @RequestPart("file") @NotNull file: MultipartFile,
         @RequestParam("folderId", required = false) folderId: Long?,
     ): ApiResponse<ImageResponseDTO.SaveResponseDTO> {
         val apiResponse = if(folderId==null) imageService.saveUncategorizedImage(userDetails.userId, file)
@@ -53,7 +58,7 @@ class ImageController (
     @Operation(summary = "이미지를 다른 폴더로 이동")
     fun moveImageToAnotherFolder(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @PathVariable imageId: Long,
+        @PathVariable @NotNull imageId: Long,
         @RequestBody requestDTO: ImageRequestDTO.MoveImageRequestDTO
     ): ApiResponse<ImageResponseDTO.MoveImageResponseDTO> {
         val apiResponse = imageService.moveImage(userDetails.userId, imageId, requestDTO)
@@ -64,7 +69,7 @@ class ImageController (
     @Operation(summary = "단일 이미지 조회 API")
     fun getImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @PathVariable imageId: Long,
+        @PathVariable @NotBlank imageId: Long,
     ): ApiResponse<ImageResponseDTO.ImageInfoDTO> {
         val apiResponse = imageService.getImageInfo(userDetails.userId, imageId)
         return apiResponse
@@ -74,7 +79,7 @@ class ImageController (
     @Operation(summary = "이미지 삭제 API")
     fun deleteImage(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @PathVariable imageId: Long
+        @PathVariable @NotBlank imageId: Long
     ): ApiResponse<Message> {
         val apiResponse = imageService.deleteImage(userDetails.userId, imageId)
         return apiResponse

@@ -5,6 +5,7 @@ import com.keeply.api.login.dto.LoginResponseDTO
 import com.keeply.api.login.service.LoginService
 import com.keeply.global.api.ApiResponse
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,7 +22,7 @@ class LoginController (
             "Me객체를 JSON형태의 requestBody로 요청"
     )
     fun loginAndRegister(
-        @RequestBody requestDTO: KakaoUserInfo
+        @Valid @RequestBody requestDTO: KakaoUserInfo
     ) : ApiResponse<LoginResponseDTO> {
         val apiResponse = loginService.loginAndRegister(requestDTO)
         return apiResponse

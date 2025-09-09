@@ -1,11 +1,13 @@
 package com.keeply.api.login.dto
 
+import jakarta.validation.constraints.NotBlank
 import java.time.LocalDateTime
 
 data class KakaoUserInfo(
     val id: Long,
     val connected_at: LocalDateTime,
     val kakao_account: KakaoAccount,
+    @NotBlank
     val fcmToken: String
 )
 
