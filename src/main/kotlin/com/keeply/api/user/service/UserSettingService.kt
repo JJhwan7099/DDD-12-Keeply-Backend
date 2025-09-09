@@ -19,6 +19,15 @@ class UserSettingService(
     private val userRepository: UserRepository,
     private val userSettingRepository: UserSettingRepository
 ) {
+    /**
+     * Retrieves the notification settings for the user with the given ID.
+     *
+     * @param userId ID of the user whose settings are being retrieved.
+     * @return ApiResponse wrapping a UserSettingResponseDTO with `allowStorageNotification` and
+     *         `allowMarketingNotification` reflecting the stored user settings (HTTP 200 on success).
+     * @throws UserNotFoundException if no user exists for the given `userId`.
+     * @throws UserSettingNotFoundException if the user has no associated settings record.
+     */
     fun getUserSetting(userId: Long) : ApiResponse<UserSettingResponseDTO> {
         val user = getUser(userId)
         val userSetting = getUserSetting(user)
@@ -31,6 +40,15 @@ class UserSettingService(
         )
     }
 
+    /**
+     * Updates a user's notification settings and returns the updated values.
+     *
+     * If a field in [requestDTO] is non-null, that setting is updated; null fields are left unchanged.
+     *
+     * @param userId ID of the user whose settings will be updated.
+     * @param requestDTO DTO containing optional updated values for storage and marketing notifications.
+     * @return An ApiResponse with HTTP 200 containing the user's current `UserSettingResponseDTO`.
+     */
     fun setUserSetting(userId: Long, requestDTO: UserSettingRequestDTO):  ApiResponse<UserSettingResponseDTO> {
         val user = getUser(userId)
         val userSetting = getUserSetting(user)
@@ -49,10 +67,23 @@ class UserSettingService(
         )
     }
 
-    private fun getUserSetting(user: User): UserSetting = userSettingRepository.findByUser(user)
+    /**
+         * Retrieves the UserSetting for the given user.
+         *
+         * @param user The user whose settings are requested.
+         * @return The UserSetting associated with the provided user.
+         * @throws UserSettingNotFoundException If no UserSetting exists for the user.
+         */
+        private fun getUserSetting(user: User): UserSetting = userSettingRepository.findByUser(user)
         ?: throw UserSettingNotFoundException()
 
-    private fun getUser(userId: Long): User = userRepository.findUserById(userId)
+    /**
+         * Fetches a User by its ID or throws when not found.
+         *
+         * @param userId The ID of the user to retrieve.
+         * @throws UserNotFoundException if no user exists with the given ID.
+         */
+        private fun getUser(userId: Long): User = userRepository.findUserById(userId)
         ?: throw UserNotFoundException()
 
 }

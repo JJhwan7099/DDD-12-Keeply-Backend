@@ -17,6 +17,22 @@ class HomeService(
     private val folderRepository: FolderRepository,
     private val s3Service: S3Service
 ) {
+    /**
+     * Builds the home payload for a user and returns it wrapped in a successful ApiResponse.
+     *
+     * Retrieves the user's images and folders ordered by updatedAt descending and composes:
+     * - counts and up-to-three previews of uncategorized images,
+     * - counts and up-to-three previews of images scheduled for deletion today,
+     * - the three most recent images,
+     * - the three most recent folders (with image counts),
+     * - the three most recent saved (foldered) images.
+     *
+     * Presigned URLs for each included image are generated via the S3 service and repository reads are performed for images and folders.
+     * Image and folder entities are expected to have non-null ids when included in the response.
+     *
+     * @param userId ID of the user whose home data is being retrieved.
+     * @return ApiResponse<HomeResponseDTO> with HttpStatus.OK containing the assembled HomeResponseDTO.
+     */
     fun getHome(userId: Long): ApiResponse<HomeResponseDTO> {
         val imagesOrderByUpdatedAtDesc = imageRepository.findAllByUserIdOrderByUpdatedAtDesc(userId)
         val foldersOrderByUpdatedAtDesc = folderRepository.findAllByUserIdOrderByUpdatedAtDesc(userId)

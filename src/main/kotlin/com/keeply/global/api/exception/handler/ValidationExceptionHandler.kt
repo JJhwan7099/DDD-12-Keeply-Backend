@@ -15,6 +15,15 @@ class ValidationExceptionHandler(
     private val messageSource: MessageSource
 ): BaseExceptionHandler() {
 
+    /**
+     * Handles MethodArgumentNotValidException thrown for @Valid request body/parameters and returns a 400 Bad Request response.
+     *
+     * Localizes each field error using the injected MessageSource, joins them into a single comma-separated message,
+     * and wraps it in an ApiResponse returned with HttpStatus.BAD_REQUEST.
+     *
+     * @param e The MethodArgumentNotValidException containing field validation errors.
+     * @return ResponseEntity containing an ApiResponse with the combined localized validation message and HTTP 400 status.
+     */
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(
         e: MethodArgumentNotValidException
@@ -27,6 +36,18 @@ class ValidationExceptionHandler(
         return buildErrorResponse(HttpStatus.BAD_REQUEST, message)
     }
 
+    /**
+     * Handles jakarta.validation.ConstraintViolationException and converts validation violations
+     * into a single BAD_REQUEST ApiResponse.
+     *
+     * Each constraint violation is converted to the format "`property: message`", where
+     * `property` is the last segment of the constraint's property path. All entries are
+     * joined with ", " and returned as the response message.
+     *
+     * @param e The ConstraintViolationException containing the validation violations.
+     * @return ResponseEntity containing an ApiResponse with HTTP 400 (Bad Request) and a
+     *         combined validation message.
+     */
     @ExceptionHandler(ConstraintViolationException::class)
     fun handleConstraintViolationException(
         e: ConstraintViolationException

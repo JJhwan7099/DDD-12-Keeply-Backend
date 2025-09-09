@@ -17,6 +17,16 @@ import org.springframework.web.multipart.MultipartFile
 class OcrController (
     private val ocrService: OcrService
 ) {
+    /**
+     * Extracts text via OCR from an uploaded image and returns recommended tags.
+     *
+     * If `isNew` is true the controller processes the image as a new upload; if false it processes an existing (uncategorized) image and therefore `imageId` must be provided.
+     *
+     * @param isNew When true, analyze the provided file as a new image. When false, analyze an existing image identified by `imageId`.
+     * @param imageId ID of the existing image to analyze; required when `isNew` is false.
+     * @param isSkip Indicates whether tag recommendation steps should be skipped (true = skip).
+     * @param file The uploaded image file to analyze; may be null for requests that do not include an upload.
+     * @return ApiResponse containing an OcrResponseDTO with extracted text and recommended tags.
     @PostMapping("/analyze", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "OCR을 통한 텍스트 추출 및 태그 추천 API",
         description =
