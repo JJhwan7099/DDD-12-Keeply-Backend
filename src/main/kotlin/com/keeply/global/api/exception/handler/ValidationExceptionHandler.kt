@@ -29,11 +29,13 @@ class ValidationExceptionHandler(
 
     @ExceptionHandler(ConstraintViolationException::class)
     fun handleConstraintViolationException(
-        e: MethodArgumentNotValidException
+        e: ConstraintViolationException
     ): ResponseEntity<ApiResponse<Nothing>>{
-        val errors = e.bindingResult.fieldErrors.map {
-                fieldError ->
-            messageSource.getMessage(fieldError, Locale.getDefault())
+        val errors = e.constraintViolations.map {
+            violation ->
+            val property = violation.propertyPath.toString()
+            val message = violation.message
+            "$property: $message"
         }
         val message = errors.joinToString(", ")
         return buildErrorResponse(HttpStatus.BAD_REQUEST, message)
