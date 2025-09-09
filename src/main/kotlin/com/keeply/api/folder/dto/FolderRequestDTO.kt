@@ -18,6 +18,7 @@ class FolderRequestDTO{
     data class UpdateRequestDTO (
         @Schema(description = "폴더명")
         @NotBlank
+        @Size(max = 20, min = 1)
         val folderName: String,
         @Schema(description = "폴더 색상 코드")
         @Pattern(
