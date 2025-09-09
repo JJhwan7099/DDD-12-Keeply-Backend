@@ -1,6 +1,7 @@
 package com.keeply.global.api.exception.handler
 
 import com.keeply.global.api.ApiResponse
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.validation.ConstraintViolationException
 import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.util.*
 
+@Hidden
 @RestControllerAdvice(basePackages = ["com.keeply.api"])
 class ValidationExceptionHandler(
     private val messageSource: MessageSource
