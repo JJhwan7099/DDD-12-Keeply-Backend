@@ -49,19 +49,21 @@ class FolderController (
     }
 
     @GetMapping("/{folderId}")
-    @Operation(summary = "folderId로 폴더의 이미지 리스트 검색, 미분류 이미지 리스트 검색 API",
-        description = "폴더 검색시 folderId, 미분류 이미지 검색시, folderId = \"uncategorized\"")
+    @Operation(summary = "folderId로 폴더의 이미지 리스트 검색 API")
     fun getFolderImages(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-        @PathVariable @Positive folderId: String
+        @PathVariable(required = true) @Positive folderId: Long
     ): ApiResponse<FolderResponseDTO.FolderImages> {
-        val apiResponse = if (folderId == "uncategorized") {
-            folderService.getUncategorizedImages(userDetails.userId)
-        } else {
-            val parsedFolderId = folderId.toLongOrNull()
-                ?: throw InvalidFolderIdException()
-            folderService.getFolderImages(userDetails.userId, parsedFolderId)
-        }
+        val apiResponse = folderService.getFolderImages(userDetails.userId, folderId)
+        return apiResponse
+    }
+
+    @GetMapping("/uncategorized")
+    @Operation(summary = "미분류 이미지 리스트 검색 API")
+    fun getFolderImages(
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
+    ): ApiResponse<FolderResponseDTO.FolderImages> {
+        val apiResponse = folderService.getUncategorizedImages(userDetails.userId)
         return apiResponse
     }
 
