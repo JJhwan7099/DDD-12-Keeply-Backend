@@ -21,15 +21,6 @@ import org.springframework.web.bind.annotation.*
 class FolderController (
     private val folderService: FolderService
 ) {
-    /**
-     * Create a new folder for the authenticated user.
-     *
-     * Creates a folder using data from the validated request DTO and associates it with the current user.
-     *
-     * @param userDetails Authenticated user principal (used to obtain the userId).
-     * @param requestDTO Payload containing folder creation data; validated before use.
-     * @return ApiResponse containing the created Folder DTO.
-     */
     @PostMapping
     @Operation(summary = "폴더 생성 API")
     fun createFolder(
@@ -40,17 +31,6 @@ class FolderController (
         return apiResponse
     }
 
-    /**
-     * Retrieves the authenticated user's folders, optionally filtered by a search keyword and ordered.
-     *
-     * Constructs a GetFoldersRequestDTO from the provided query parameters and delegates to FolderService
-     * to fetch the folder list for the authenticated user.
-     *
-     * @param keyword Optional search keyword to filter folders; if null, no keyword filtering is applied.
-     * @param sortBy Field name to sort by (default: "updatedAt").
-     * @param orderBy Sort direction, either "asc" or "desc" (default: "desc").
-     * @return ApiResponse containing the user's FolderList DTO.
-     */
     @GetMapping
     @Operation(summary = "유저별 폴더 목록 조회 검색 API")
     fun getFolders(
@@ -68,17 +48,6 @@ class FolderController (
         return apiResponse
     }
 
-    /**
-     * Retrieve images for a specific folder or the uncategorized images list.
-     *
-     * If `folderId` equals `"uncategorized"`, returns uncategorized images for the authenticated user.
-     * Otherwise `folderId` must be a numeric string representing a positive folder ID; the numeric ID
-     * is parsed and used to return the folder's images.
-     *
-     * @param folderId Either the literal `"uncategorized"` or a numeric folder ID as a string.
-     * @return An ApiResponse wrapping FolderResponseDTO.FolderImages for the requested folder or uncategorized set.
-     * @throws InvalidFolderIdException If `folderId` is neither `"uncategorized"` nor a valid numeric ID.
-     */
     @GetMapping("/{folderId}")
     @Operation(summary = "folderId로 폴더의 이미지 리스트 검색, 미분류 이미지 리스트 검색 API",
         description = "폴더 검색시 folderId, 미분류 이미지 검색시, folderId = \"uncategorized\"")
@@ -97,13 +66,6 @@ class FolderController (
     }
 
 
-    /**
-     * Updates an existing folder for the authenticated user.
-     *
-     * @param folderId ID of the folder to update; must be positive.
-     * @param requestDTO Fields to update on the folder (e.g., name, description).
-     * @return ApiResponse containing the updated Folder response DTO.
-     */
     @PutMapping("/{folderId}")
     @Operation(summary = "폴더 수정 API")
     fun updateFolder(
@@ -115,14 +77,6 @@ class FolderController (
         return apiResponse
     }
 
-    /**
-     * Deletes the specified folder for the authenticated user.
-     *
-     * Deletes the folder identified by `folderId` (and any service-managed associations) belonging to the authenticated user.
-     *
-     * @param folderId Positive ID of the folder to delete.
-     * @return ApiResponse containing a Message describing the result of the deletion.
-     */
     @DeleteMapping("/{folderId}")
     @Operation(summary = "폴더 삭제 API")
     fun deleteFolder(

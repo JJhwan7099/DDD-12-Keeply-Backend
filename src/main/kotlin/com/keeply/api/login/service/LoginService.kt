@@ -21,16 +21,6 @@ class LoginService (
     private val lambdaService: LambdaService,
     private val jwtProvider: JwtProvider
 ) {
-    /**
-     * Logs in or registers a Kakao-authenticated user and returns JWT tokens.
-     *
-     * Finds or creates a User from the provided KakaoUserInfo, restores the user if previously deleted,
-     * updates the user's FCM token, ensures a UserSetting exists and is associated, and issues an access
-     * and refresh token.
-     *
-     * @param requestDTO Kakao user information and client-provided data (including an optional FCM token).
-     * @return An ApiResponse containing a LoginResponseDTO with an accessToken and refreshToken (HTTP 200).
-     */
     fun loginAndRegister(requestDTO: KakaoUserInfo): ApiResponse<LoginResponseDTO> {
         val user: User = findOrSaveUserWithKakaoId(requestDTO)
         restoreDeletedUser(user)

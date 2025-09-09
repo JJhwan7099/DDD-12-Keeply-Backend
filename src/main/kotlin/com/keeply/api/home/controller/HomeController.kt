@@ -15,12 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 class HomeController(
     private val homeService: HomeService,
 ) {
-    /**
-     * Returns the home screen data for the authenticated user.
-     *
-     * @param userDetails Authenticated user's details; used to obtain the `userId`.
-     * @return ApiResponse containing a HomeResponseDTO with the data to render the home screen.
-     */
     @GetMapping
     @Operation(summary = "홈화면 요청 API")
     fun getHome(

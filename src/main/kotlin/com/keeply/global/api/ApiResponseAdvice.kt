@@ -14,14 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 @Hidden
 @RestControllerAdvice(basePackages = ["com.keeply.api"])
 class ApiResponseAdvice: ResponseBodyAdvice<Any>{
-    /**
-     * Returns true when the controller method's declared return type is `ApiResponse` or a subtype.
-     *
-     * The method inspects the provided `MethodParameter`'s `parameterType` and checks assignability
-     * against `ApiResponse::class.java`.
-     *
-     * @return `true` if this advice should be applied to the response body; `false` otherwise.
-     */
     override fun supports(
         returnType: MethodParameter,
         converterType: Class<out HttpMessageConverter<*>?>
@@ -30,22 +22,6 @@ class ApiResponseAdvice: ResponseBodyAdvice<Any>{
         return ApiResponse::class.java.isAssignableFrom(parameterType)
     }
 
-    /**
-     * Post-processes controller response bodies of type `ApiResponse` before they are written.
-     *
-     * If `body` is an `ApiResponse`, sets the HTTP status on the outgoing response to `body.statusCode`.
-     * Additionally, when the request path equals `"/api/login"` and `body.success` is `true`, attempts to
-     * cast `body.response` to `LoginResponseDTO` and, if successful, adds an `Authorization: Bearer <token>`
-     * header using `data.accessToken`.
-     *
-     * @param body The controller return value; inspected for `ApiResponse` to apply status/header side effects.
-     * @param returnType Not modified; provided by the framework.
-     * @param selectedContentType Not modified; provided by the framework.
-     * @param selectedConverterType Not modified; provided by the framework.
-     * @param request The current server request (used to check the request path).
-     * @param response The server response that will be modified (status and optional headers).
-     * @return The original `body` value (unchanged except for side effects on the HTTP response when `body` is an `ApiResponse`).
-     */
     override fun beforeBodyWrite(
         body: Any?,
         returnType: MethodParameter,

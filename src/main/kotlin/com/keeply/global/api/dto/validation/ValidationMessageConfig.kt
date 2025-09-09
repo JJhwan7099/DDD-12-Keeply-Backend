@@ -8,15 +8,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 @Configuration
 class ValidationMessageConfig {
 
-    /**
-     * Creates a reloadable MessageSource for validation messages.
-     *
-     * This provides a Spring-managed MessageSource bean backed by a ReloadableResourceBundleMessageSource
-     * with basename "classpath:ValidationMessages" and UTF-8 default encoding, enabling internationalized
-     * validation message resolution from ValidationMessages*.properties files on the classpath.
-     *
-     * @return a configured MessageSource ready for use by validation and message resolution
-     */
     @Bean
     fun validationMessageSource(): MessageSource {
         val messageSource = ReloadableResourceBundleMessageSource()
