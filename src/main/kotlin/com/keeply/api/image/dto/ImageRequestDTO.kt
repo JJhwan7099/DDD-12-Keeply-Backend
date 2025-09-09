@@ -11,7 +11,6 @@ class ImageRequestDTO {
             신규 이미지 -> true
             미분류 이미지 -> false
         """)
-        @NotBlank
         val isCached: Boolean,
         @Schema(description = """
             OCR후 캐싱된 이미지 Id
