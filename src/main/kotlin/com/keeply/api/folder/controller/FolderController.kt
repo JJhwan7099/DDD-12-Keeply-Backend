@@ -60,7 +60,7 @@ class FolderController (
 
     @GetMapping("/uncategorized")
     @Operation(summary = "미분류 이미지 리스트 검색 API")
-    fun getFolderImages(
+    fun getUncategorizedImages(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
     ): ApiResponse<FolderResponseDTO.FolderImages> {
         val apiResponse = folderService.getUncategorizedImages(userDetails.userId)
