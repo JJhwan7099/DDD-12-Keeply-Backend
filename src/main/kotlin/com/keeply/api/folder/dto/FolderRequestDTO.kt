@@ -1,18 +1,30 @@
 package com.keeply.api.folder.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Pattern
 
 class FolderRequestDTO{
     data class CreateRequestDTO (
         @Schema(description = "폴더명")
+        @NotBlank
         val folderName: String,
         @Schema(description = "폴더 색상 코드")
+        @Pattern(
+            regexp = "^[0-9a-fA-F]{8}$",
+            message = "색상 코드는 AARRGGBB (8자리 HEX) 형식이어야 합니다."
+        )
         val folderColor: String
     )
     data class UpdateRequestDTO (
         @Schema(description = "폴더명")
+        @NotBlank
         val folderName: String,
         @Schema(description = "폴더 색상 코드")
+        @Pattern(
+            regexp = "^[0-9a-fA-F]{8}$",
+            message = "색상 코드는 AARRGGBB (8자리 HEX) 형식이어야 합니다."
+        )
         val folderColor: String
     )
     data class GetFoldersRequestDTO(
