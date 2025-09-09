@@ -33,7 +33,7 @@ class ValidationExceptionHandler(
     ): ResponseEntity<ApiResponse<Nothing>>{
         val errors = e.constraintViolations.map {
             violation ->
-            val property = violation.propertyPath.toString()
+            val property = violation.propertyPath.toString().split(".").last()
             val message = violation.message
             "$property: $message"
         }
